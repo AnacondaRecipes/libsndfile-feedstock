@@ -55,12 +55,16 @@ test:
     - sndfile-info --help || if !ERRORLEVEL! LEQ 1 cmd /c "exit /b 0"  # [win]
 
 about:
-  home: http://www.mega-nerd.com/libsndfile
+  home: https://libsndfile.github.io/libsndfile/
   dev_url: https://github.com/libsndfile/libsndfile
+  doc_url: https://libsndfile.github.io/libsndfile/
   license: LGPL-2.1-or-later
   license_family: LGPL
   license_file: COPYING
-  summary: libsndfile - a C library for reading and writing files containing sampled sound (such as MS Windows WAV and the Apple/SGI AIFF format) through one standard library interface
+  summary: libsndfile is a C library for reading and writing files containing sampled audio data.
+  description: |
+    libsndfile is a C library for reading and writing files containing sampled sound 
+    (such as MS Windows WAV and the Apple/SGI AIFF format) through one standard library interface.
 
 extra:
   recipe-maintainers:
