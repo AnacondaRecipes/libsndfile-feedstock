@@ -43,6 +43,8 @@ requirements:
     - libopus
     - lame
     - mpg123
+  run:
+    - mpg123
 
 test:
   commands:
