@@ -32,7 +32,7 @@ requirements:
     - lame 3.100
     - mpg123 1.30.0
   run:
-    - mpg123
+    - {{ pin_compatible('mpg123') }}
 
 test:
   commands:
