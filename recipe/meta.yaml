@@ -8,17 +8,6 @@ package:
 source:
   url: https://github.com/libsndfile/{{ name }}/releases/download/{{ version }}/{{ name }}-{{ version }}.tar.xz  
   sha256: 3799ca9924d3125038880367bf1468e53a1b7e3686a934f098b7e1d286cdb80e  
-  #patches:
-    # the libs private sections of pkgconfig is only useful when statically
-    # linking which we do not use.
-    # On windows, this results in an empty "-l" which breakds downstream packages
-    # since the linker tries to link to ".libs"
-    # https://github.com/conda-forge/gst-plugins-bad-feedstock/pull/20#issuecomment-1336553304
-    # it may be related to
-    # https://github.com/libsndfile/libsndfile/issues/827
-    # But I don't have time to investigate too much
-    #- disable_libs_private_pkgconfig.patch
-
 
 build:
   number: 0
@@ -29,7 +18,6 @@ build:
 
 requirements:
   build:
-    - patch  # [unix]
     - gnuconfig  # [unix]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
