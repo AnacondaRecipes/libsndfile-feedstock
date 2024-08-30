@@ -25,18 +25,15 @@ build:
   run_exports:
         # https://abi-laboratory.pro/?view=timeline&l=libsndfile
     - {{ pin_subpackage(name, max_pin="x.x") }}
-  skip: true  # [s390x]
+  skip: true  # [s390x or win]
 
 requirements:
   build:
     - patch  # [unix]
-    - m2-patch  # [win]
     - gnuconfig  # [unix]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - make   # [not win]
-    - cmake  # [win]
-    - ninja  # [win]
     - python
     - pkg-config  # [unix]
   host:
@@ -52,12 +49,9 @@ requirements:
 test:
   commands:
     - test -f $PREFIX/lib/libsndfile${SHLIB_EXT}  # [not win]
-    - if not exist %PREFIX%\\Library\\bin\\sndfile.dll exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\lib\\sndfile.lib exit 1  # [win]
 
     # try to run one of the commands (--help returns 1, so make that OK)
     - sndfile-info --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi  # [not win]
-    - sndfile-info --help || if !ERRORLEVEL! LEQ 1 cmd /c "exit /b 0"  # [win]
 
 about:
   home: https://libsndfile.github.io/libsndfile/
