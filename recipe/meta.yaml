@@ -25,6 +25,7 @@ build:
   run_exports:
         # https://abi-laboratory.pro/?view=timeline&l=libsndfile
     - {{ pin_subpackage(name, max_pin="x.x") }}
+  skip: true  # [s390x]
 
 requirements:
   build:
