@@ -2,3 +2,4 @@
 #   - sfe1ed40
 channels:
   - https://staging.continuum.io/prefect/fs/libopus-feedstock/pr1/c45c541
+  - sfe1ed40
