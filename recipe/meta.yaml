@@ -6,45 +6,49 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/libsndfile/{{ name }}/releases/download/{{ version }}/{{ name }}-{{ version }}.tar.xz  
+  url: https://github.com/{{ name }}/{{ name }}/releases/download/{{ version }}/{{ name }}-{{ version }}.tar.xz  
   sha256: 3799ca9924d3125038880367bf1468e53a1b7e3686a934f098b7e1d286cdb80e  
+  patches:
+    - patches/0001-fix-cmake.patch
 
 build:
-  number: 2
+  number: 0
   run_exports:
-        # https://abi-laboratory.pro/?view=timeline&l=libsndfile
+    # https://abi-laboratory.pro/?view=timeline&l=libsndfile
     - {{ pin_subpackage(name, max_pin="x.x") }}
-  skip: true  # [s390x or win]
 
 requirements:
   build:
-    - gnuconfig  # [unix]
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - make   # [not win]
     - python
+    - make        # [unix]
+    - cmake       # [win]
+    - ninja-base  # [win]
     - pkg-config  # [unix]
+    - gnuconfig   # [unix]
   host:
-    - libflac 1.4.3
-    - libvorbis 1.3.7
-    - libogg 1.3.5
-    - libopus 1.3
-    - lame 3.100
-    - mpg123 1.30.0
+    - mpg123
+    - libflac 1.5.0
+    - libvorbis {{ libvorbis }}
+    - libogg {{ libogg }}
+    - libopus {{ libopus }}
+    - lame {{ lame }}
   run:
     - {{ pin_compatible('mpg123', max_pin='x.x')}}
 
 test:
   commands:
     - test -f $PREFIX/lib/libsndfile${SHLIB_EXT}  # [not win]
+    - if not exist %PREFIX%\\Library\\bin\\sndfile.dll exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\lib\\sndfile.lib exit 1  # [win]
 
     # try to run one of the commands (--help returns 1, so make that OK)
     - sndfile-info --help || ec=$?; if [ $ec -gt 1 ]; then exit $ec; fi  # [not win]
 
 about:
-  home: https://libsndfile.github.io/libsndfile/
-  dev_url: https://github.com/libsndfile/libsndfile
-  doc_url: https://libsndfile.github.io/libsndfile/
+  home: https://libsndfile.github.io/libsndfile
   license: LGPL-2.1-or-later
   license_family: LGPL
   license_file: COPYING
@@ -52,6 +56,8 @@ about:
   description: |
     libsndfile is a C library for reading and writing files containing sampled sound 
     (such as MS Windows WAV and the Apple/SGI AIFF format) through one standard library interface.
+  dev_url: https://github.com/libsndfile/libsndfile
+  doc_url: https://libsndfile.github.io/libsndfile
 
 extra:
   recipe-maintainers:
